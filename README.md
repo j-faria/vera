@@ -1,0 +1,2 @@
+# vera
+velocidades radiais
