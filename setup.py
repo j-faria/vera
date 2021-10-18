@@ -24,7 +24,7 @@ setup(
         'python-dace-client'
     ],
     dependency_links=[
-        'https://dace.unige.ch/api'
+        'https://dace.unige.ch/api/python-dace-client'
     ],
     zip_safe=False,
 )
