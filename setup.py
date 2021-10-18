@@ -20,7 +20,11 @@ setup(
         'scipy',
         'matplotlib',
         'requests',
-        'tqdm'
+        'tqdm',
+        'python-dace-client'
+    ],
+    dependency_links=[
+        'https://dace.unige.ch/api'
     ],
     zip_safe=False,
 )
