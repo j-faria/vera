@@ -22,6 +22,17 @@ setup(
         'requests',
         'tqdm',
         'python-dace-client'
+        'cached-property',
+        'colorful',
+        'astropy',
+        'astroquery',
+        'lightkurve',
+        'gatspy',
+        'PyAstronomy',
+        'pyexoplaneteu',
+        'pyephem',
+        'mpldatacursor',
+        'iCCF',
     ],
     dependency_links=[
         'https://dace.unige.ch/api/python-dace-client'
