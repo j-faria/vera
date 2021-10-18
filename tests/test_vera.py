@@ -17,6 +17,9 @@ def test_read_rdb():
 
 
 def test_DACE():
+    from os.path import exists
     from vera import DACE
     s = DACE.HD10180
     print(s)
+    assert exists('HD10180_HARPS03_3.5.rdb')
+    assert exists('HD10180_HARPS15_3.5.rdb')
