@@ -15,5 +15,8 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     packages=['vera'],
+    install_requires=[
+        'requests',
+    ],
     zip_safe=False,
 )
