@@ -72,8 +72,7 @@ from .query_dace import get_observations
 from .stat_tools import wrms, false_alarm_level_gatspy
 from .query_simbad import getIDs, getSPtype, get_bmv, get_vmag
 from .binit import binRV
-from .query_periods import get_JDs, get_random_times, ESO_periods
-from .detection_limits import do_detection_limits
+from .query_periods import get_JDs, get_random_times
 from .gaia import secular_acceleration
 from .HZ import getHZ_period
 from .TESS import TESS
@@ -81,7 +80,7 @@ from .photometry import photometry
 from .utils import (info, warning, error, chdir, get_function_call_str)
 
 from .visibility import StarObsPlot, StarObsAxis
-from .utils import _harps_fiber_upgrade, _technical_intervention, _ramp_up
+from .globals import _harps_fiber_upgrade, _technical_intervention, _ramp_up
 from .utils import blue, red, redb, yel, yelb, green
 
 
