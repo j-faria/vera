@@ -1,6 +1,6 @@
 
 <div align="center">
-<img src="vera/vera.gif" width="400px"></img>
+<img src="img/vera.gif" width="400px"></img>
 
 
 [![PyPI version](https://badge.fury.io/py/verapy.svg)](https://pypi.org/project/verapy/)
@@ -33,5 +33,11 @@ s.plot()
 from vera import DACE
 
 HD10180 = DACE.HD10180
+HD10180.plot_and_gls()
+```
+
+![hd10180](img/hd10180.png)
+
+
 
 ```
