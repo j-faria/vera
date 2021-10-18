@@ -38,6 +38,3 @@ HD10180.plot_and_gls()
 
 ![hd10180](img/hd10180.png)
 
-
-
-```
