@@ -21,7 +21,7 @@ setup(
         'matplotlib',
         'requests',
         'tqdm',
-        'python-dace-client'
+        'python-dace-client',
         'cached-property',
         'colorful',
         'astropy',
