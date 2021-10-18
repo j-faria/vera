@@ -64,7 +64,7 @@ ESO_periods = {
 
 for k,v in ESO_periods.items():
     ESO_periods[k].append([Time('-'.join(map(str, vv))).jd - 24e5 for vv in v])
-    
+
 
 
 def parse_date(date):
@@ -130,7 +130,7 @@ def get_JDs(period='102', night=True, arrays=True, verbose=True):
 
         if verbose and night:
             print('calculating sunset/sunrise times...')
-        
+
         for line in lines:
             try:
                 found = re.findall(pattern, line)[0]
@@ -141,7 +141,7 @@ def get_JDs(period='102', night=True, arrays=True, verbose=True):
             if night:
                 t = Time(parse_date(date1) + ' 12:00:00')
                 VLT.change_date(t.datetime)
-                jd1 = Time(datetime.datetime.strptime(str(VLT.sunset), 
+                jd1 = Time(datetime.datetime.strptime(str(VLT.sunset),
                            r'%Y/%m/%d %H:%M:%S')).mjd
                 # jd1 = paranal.sun_set_time(t, 'next').mjd
             else:
@@ -151,7 +151,7 @@ def get_JDs(period='102', night=True, arrays=True, verbose=True):
             if night:
                 t = Time(parse_date(date2) + ' 12:00:00')
                 VLT.change_date(t.datetime)
-                jd2 = Time(datetime.datetime.strptime(str(VLT.sunset), 
+                jd2 = Time(datetime.datetime.strptime(str(VLT.sunset),
                            r'%Y/%m/%d %H:%M:%S')).mjd
                 # jd2 = paranal.sun_rise_time(t, 'previous').mjd
             else:
@@ -189,33 +189,4 @@ def plot_runs(starts=None, ends=None, period='102', night=True, today=True, **kw
 
 
 def get_random_times(N, periods, seed=None, mjd=True, return_available=False):
-    """ If mjd, return modified Julian days, otherwise return Julian days """
-    import numpy as np
-    if isinstance(periods, str):
-        periods = list(map(int, periods.split(',')))
-    elif isinstance(periods, int):
-        periods = (periods,)
-    
-    if seed:
-        np.random.seed(seed)
-    path = '/home/jfaria/data/ESPRESSO/'
-    filename = path + f'paranal_sunset_sunrise_times_P{periods[0]}.dat'
-    starts, ends = np.genfromtxt(filename, skip_header=1, usecols=(1,2)).T
-    
-    for period in periods[1:]:
-        filename = path + f'paranal_sunset_sunrise_times_P{period}.dat'
-        s, e = np.genfromtxt(filename, skip_header=1, usecols=(1,2)).T
-        starts, ends = np.append(starts, s), np.append(ends, e)
-
-    if not mjd:
-        starts += 0.5
-        ends += 0.5
-
-    if return_available:
-        today = Time.now().mjd
-        if not mjd:
-            today += 0.5
-        return np.array([(s, e) for s, e in zip(starts, ends) if s > today])
-
-    chosen = np.random.choice(starts.size, N, replace=False)
-    return np.sort(np.random.uniform(starts[chosen], ends[chosen]))
+    raise NotImplementedError
