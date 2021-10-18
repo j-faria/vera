@@ -9,3 +9,13 @@
 [![Funding](https://img.shields.io/badge/funding-FCT-darkgreen.svg)](https://www.fct.pt/)
 
 </div>
+
+
+```python
+from vera import RV
+
+s = RV('data_file.rdb')
+
+s.plot()
+```
+
