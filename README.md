@@ -4,6 +4,7 @@
 
 
 [![PyPI version](https://badge.fury.io/py/verapy.svg)](https://pypi.org/project/verapy/)
+[![CI](https://github.com/j-faria/vera/actions/workflows/python-package.yml/badge.svg)](https://github.com/j-faria/vera/actions/workflows/python-package.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-informational.svg)](https://github.com/j-faria/vera/blob/main/LICENSE)
 [![Funding](https://img.shields.io/badge/funding-FCT-darkgreen.svg)](https://www.fct.pt/)
 
