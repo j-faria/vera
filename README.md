@@ -11,6 +11,14 @@
 </div>
 
 
+### Installation
+
+```
+pip install verapy
+```
+
+### Getting started
+
 ```python
 from vera import RV
 
@@ -19,3 +27,11 @@ s = RV('data_file.rdb')
 s.plot()
 ```
 
+### Interfacing with DACE
+
+```python
+from vera import DACE
+
+HD10180 = DACE.HD10180
+
+```
