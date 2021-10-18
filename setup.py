@@ -20,6 +20,7 @@ setup(
         'scipy',
         'matplotlib',
         'requests',
+        'tqdm'
     ],
     zip_safe=False,
 )
