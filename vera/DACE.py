@@ -30,8 +30,10 @@ def deescape(target):
     if target in translate:
         target = translate[target]
     else:
-        target = target.replace('K2_', 'K2-').replace('TOI_', 'TOI-').replace(
-            'BD_', 'BD+').replace('_', '')
+        target = target.replace('K2_', 'K2-')
+        target = target.replace('TOI_', 'TOI-')
+        target = target.replace('BD_', 'BD+')
+        target = target.replace('_', '')
 
     return target
 
@@ -503,7 +505,7 @@ class DACE():
     @property
     def settings(self):
         msg = "Use .set(setting=True/False) to change each setting.\n"
-        msg += "For example GTO.set(bin_nightly=False, verbose=True)\n"
+        msg += "For example DACE.set(bin_nightly=False, verbose=True)\n"
         print(msg)
         pprint(self._kwargs)
 
