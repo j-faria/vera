@@ -38,3 +38,18 @@ HD10180.plot_and_gls()
 
 <img src="img/hd10180.png" width="80%"></img>
 
+
+### Known RV surveys
+
+`vera` knows about a few RV surveys and implements special methods to deal with
+these observations.  
+For example,
+
+```python
+from vera import KOBE  
+s = KOBE.[target_name]
+```
+See [kobe.caha.es](https://kobe.caha.es/) for more information on the KOBE
+experiment.
+
+
