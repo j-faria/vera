@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='verapy',
-    version='0.0.3',
+    version='0.0.4',
     description='velocidades radiais',
     url='https://github.com/j-faria/vera',
     author='João Faria',
