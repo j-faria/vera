@@ -73,7 +73,15 @@ def plot(self,
 
         def tooltip_formatter(**kwargs):
             x, y = kwargs['x'], kwargs['y']
-            ind = np.where(self.time == x)[0][0]
+
+            # this doesn't work when observations from different instruments
+            # (or pipelines) have the same time
+            # ind = np.where(self.time == x)[0][0]
+            # this seems to work
+            find_x = np.where(self.time == x)
+            find_y = np.where(self.vrad == y)
+            ind = np.intersect1d(find_x, find_y)[0]
+
             e = self.svrad[ind]
             # i = self.instruments[int(self.obs[ind]) - 1]
             dt = self.datetimes[ind]
@@ -98,7 +106,12 @@ def plot(self,
             if event.key == 'r':
                 print(f'Pressed "{event.key}".')
                 props = c.event_info(c._last_event)
-                ind = np.where(self.time == props['x'])[0][0]
+                # same problem as above
+                # ind = np.where(self.time == props['x'])[0][0]
+                # seems to work
+                find_x = np.where(self.time == props['x'])
+                find_y = np.where(self.vrad == props['y'])
+                ind = np.intersect1d(find_x, find_y)[0]
                 # print(f'Removing point with index {ind}')
                 self.remove_point(ind)
                 plt.close(fig)

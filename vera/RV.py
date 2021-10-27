@@ -1023,6 +1023,7 @@ class RV:
         # index[index < 0] = self.NN + index[index < 0]
 
         instrument = self.instruments[(self.obs[index] - 1).astype(int)]
+        pipeline = np.array(self.pipelines)[(self.obs[index] - 1).astype(int)]
 
         if self.verbose:
             word = 'point at index' if len(index) == 1 else 'points at indices'
@@ -1033,8 +1034,12 @@ class RV:
         self.mask[index] = False
 
         # mask the point(s) in self.each also
-        for ind, inst in zip(index, instrument):
-            i = getattr(self.each, inst)
+        for ind, inst, pipe in zip(index, instrument, pipeline):
+            try:
+                i = getattr(self.each, inst)
+            except AttributeError:
+                pipe = pipe.replace('-', '_').replace('.', '_')
+                i = getattr(self.each, f'{inst}_{pipe}')
             mask_out = np.where(i.time == self.time[ind])
             i.mask[mask_out] = False
 
