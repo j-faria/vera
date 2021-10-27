@@ -14,7 +14,7 @@
 ### Installation
 
 ```
-pip install verapy
+pip install verapy --extra-index-url https://dace.unige.ch/api
 ```
 
 ### Getting started
