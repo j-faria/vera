@@ -36,5 +36,5 @@ HD10180 = DACE.HD10180
 HD10180.plot_and_gls()
 ```
 
-![hd10180](img/hd10180.png)
+<img src="img/hd10180.png" width="80%"></img>
 
