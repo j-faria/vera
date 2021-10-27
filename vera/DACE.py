@@ -33,6 +33,7 @@ def deescape(target):
         target = target.replace('K2_', 'K2-')
         target = target.replace('TOI_', 'TOI-')
         target = target.replace('BD_', 'BD+')
+        target = target.replace('KOBE_', 'KOBE-')
         target = target.replace('_', '')
 
     return target

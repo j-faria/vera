@@ -1,3 +1,6 @@
+# import pytest
+
+
 def test_imports():
     import vera
     from vera import RV
@@ -17,7 +20,19 @@ def test_read_rdb():
 
 
 def test_DACE():
-    from os.path import exists
     from vera import DACE
     s = DACE.HD10180
     print(s)
+
+
+def test_KOBE(capsys):
+    from vera import KOBE
+
+    # not in target list
+    _ = KOBE.HD100
+    cap = capsys.readouterr()
+    assert cap.out == 'Cannot find "HD100" in KOBE target list.\n'
+
+    # no access to data
+    s = KOBE.KOBE_001
+    assert s is None
