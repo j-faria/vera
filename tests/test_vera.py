@@ -36,3 +36,11 @@ def test_KOBE(capsys):
     # no access to data
     s = KOBE.KOBE_001
     assert s is None
+
+
+def test_plot():
+    import matplotlib.pyplot as plt
+    from vera import DACE
+    s = DACE.HD10180
+    s.plot()
+    plt.close('all')

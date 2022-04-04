@@ -168,6 +168,7 @@ def styleit(func):
 
     def wrapper(*args, **kwargs):
         with style.context([os.path.join(here, 'cute_style.mplstyle')]):
+            print(here)
             func(*args, **kwargs)
 
     return wrapper
