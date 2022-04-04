@@ -1,4 +1,5 @@
 import os
+import sys
 import contextlib
 import inspect
 
@@ -172,3 +173,14 @@ def styleit(func):
             func(*args, **kwargs)
 
     return wrapper
+
+
+@contextlib.contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:  
+            yield
+        finally:
+            sys.stdout = old_stdout

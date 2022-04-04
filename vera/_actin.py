@@ -2,13 +2,16 @@ import os
 from glob import glob
 import numpy as np
 
+from .utils import info, suppress_stdout
+
 try:
-    from actin.actin import actin as ACTIN  # actinception
+    with suppress_stdout():
+        from actin.actin import actin as ACTIN  # actinception
     _actin_available = True
 except ImportError:
     _actin_available = False
 
-from .utils import info
+
 
 def actin(self):
     if not _actin_available:
