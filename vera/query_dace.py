@@ -11,7 +11,9 @@ from argparse import RawTextHelpFormatter
 
 import numpy as np
 from tqdm import tqdm
-from dace.spectroscopy import Spectroscopy
+
+from dace import Dace, DaceClass
+from dace.spectroscopy import Spectroscopy, SpectroscopyClass
 
 from .utils import error, info
 from .globals import _ramp_up, COMMISSIONING
@@ -210,10 +212,69 @@ def get_arrays(d):
         drs_qc)
 
 
+def get_rv_data(star, apikey=None, user=None, raise_exit=False):
+    """
+    Query the DACE API for `star` using a specific apiKey or user.
+
+    Arguments
+    ---------
+    apiKey: str, optional
+        DACE API key to use for the query
+    user: str, optional
+        "username" which should exist in the ~/.dacerc file with an associated
+        API key
+    raise_exit: bool, optional, default False
+    """
+    # Gives you a dict with instruments as keys and list of data as values
+    try:
+        # provided a DACE API key directly
+        if apikey is not None:
+            import tempfile
+            with tempfile.NamedTemporaryFile(mode='a+') as dacerc:
+                dacerc.write(f"[user]\n  key = apiKey:{apikey}\n")
+                dacerc.flush()
+                dacerc.seek(0)
+                dace = DaceClass(dace_rc_config_path=dacerc.name)
+                rv_data = SpectroscopyClass(
+                    dace_instance=dace).get_timeseries(star)
+
+        # provided a user name to be queried from .dacerc file
+        elif user is not None:
+            import tempfile
+            import configparser
+            cfg = configparser.ConfigParser()
+            cfg.read(os.path.expanduser('~/.dacerc'))
+            apikey = cfg.get(user, 'key').split(':')[1]
+
+            with tempfile.NamedTemporaryFile(mode='a+') as dacerc:
+                dacerc.write(f"[user]\n  key = apiKey:{apikey}\n")
+                dacerc.flush()
+                dacerc.seek(0)
+                dace = DaceClass(dace_rc_config_path=dacerc.name)
+                rv_data = SpectroscopyClass(
+                    dace_instance=dace).get_timeseries(star)
+
+        # use default user (called "user") from .dacerc file
+        else:
+            rv_data = Spectroscopy.get_timeseries(star)
+
+    except requests.RequestException:
+        E = requests.RequestException
+        raise E(f'Cannot find "{star}" in DACE') from None
+    except KeyError:
+        print(f'Cannot find "{star}" in DACE')
+        if raise_exit:
+            sys.exit(1)
+        raise ValueError(f'Cannot find "{star}" in DACE') from None
+
+    return rv_data
+
+
 def separate_19_21(rv_data):
     _19 = 'ESPRESSO19'
     _21 = 'ESPRESSO21'
     if _19 in rv_data:  # actually do something
+        to_remove = []
         rv_data[_21] = {}
         for pipe in rv_data[_19]:
             rv_data[_21][pipe] = {}
@@ -225,7 +286,10 @@ def separate_19_21(rv_data):
                     rv_data[_21][pipe][mode][key] = list(np.array(val)[mask])
                 # no observations left on ESPRESSO19
                 if np.sum(~mask) == 0:
-                    rv_data.pop(_19)
+                    to_remove.append((pipe, mode))
+
+        for (pipe, mode) in to_remove:
+            rv_data[_19].pop(pipe)
 
     return rv_data
 
@@ -238,8 +302,8 @@ translate = {
 }
 
 
-def get_observations(star, instrument=None, rdb=False, ms=False,
-                     save_versions=False, keep_mode='HR11',
+def get_observations(star, instrument=None, user=None, apikey=None, rdb=False,
+                     ms=False, save_versions=False, keep_mode='HR11',
                      remove_ESPRESSO_commissioning=False, write_dates=False,
                      verbose=True, raise_exit=False):
     """ Get radial velocity observations for `star` from DACE.
@@ -248,6 +312,11 @@ def get_observations(star, instrument=None, rdb=False, ms=False,
     ----------
     star : str
         The name of the star
+    user: str
+        "username" which should exist in the ~/.dacerc file with an associated
+        API key
+    apiKey: str
+        DACE API key to use for the query
     instrument : str
         Get only observations from this instrument. Only used if `rdb` is True
     rdb : bool, default False
@@ -274,19 +343,7 @@ def get_observations(star, instrument=None, rdb=False, ms=False,
             print(f'{star} -> {translate[star]}')
         star = translate[star]
 
-    # Gives you a dict with instruments as keys and list of data as values
-    try:
-        # rv_data = obs.get_rv_by_instrument(star)
-        # rv_data = Dace.retrieve_spectro_timeseries(star)
-        rv_data = Spectroscopy.get_timeseries(star)
-    except requests.RequestException:
-        E = requests.RequestException
-        raise E(f'Cannot find "{star}" in DACE') from None
-    except KeyError:
-        print(f'Cannot find "{star}" in DACE')
-        if raise_exit:
-            sys.exit(1)
-        raise ValueError(f'Cannot find "{star}" in DACE') from None
+    rv_data = get_rv_data(star, apikey, user, raise_exit)
 
     # rv_data is organized as
     #   key - instrument
@@ -299,7 +356,7 @@ def get_observations(star, instrument=None, rdb=False, ms=False,
 
     instruments = rv_data.keys()
     # number of pipeline versions per instrument
-    npipes = n_pipeline_versions(rv_data)
+    # npipes = n_pipeline_versions(rv_data)
 
     if instrument and not np.any([instrument in k for k in rv_data.keys()]):
         raise ValueError(f'No observations of instrument {instrument}')
