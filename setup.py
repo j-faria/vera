@@ -16,7 +16,7 @@ setup(
     ],
     packages=['vera'],
     install_requires=[
-        'numpy==1.20',
+        'numpy',
         'scipy',
         'matplotlib',
         'requests',
