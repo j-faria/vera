@@ -37,5 +37,6 @@ setup(
     dependency_links=[
         'https://dace.unige.ch/api/python-dace-client'
     ],
+    package_data={'vera': ['cute_style.mplstyle']},
     zip_safe=False,
 )
