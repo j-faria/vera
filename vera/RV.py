@@ -1367,7 +1367,11 @@ class RV:
         data['star_name'] = np_char.replace(data['star_name'], ' ', '')
 
         data.to_numpy()
-        options = [self.star, self.star.replace(' ', '')]
+        options = [
+            self.star,
+            self.star.replace(' ', ''),
+            self.star.replace('WASP', 'WASP-')
+        ]
         possible_names = othernames + options
         possible_names += [n + 'A' for n in possible_names]
         possible_names = np.unique(possible_names)
